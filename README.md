@@ -5,8 +5,8 @@
   <a href="https://github.com/haru">
     <img height="20" src="https://img.shields.io/github/followers/haru?label=follow&logo=github&style=flat" />
   </a>
-  <a href="https://zenn.dev/keichan_15">
-    <img height="20" src="https://badgen.org/img/zenn/keichan_15/articles?style=plastic" />
+  <a href="https://zenn.dev/haru_iida">
+    <img height="20" src="https://badgen.org/img/zenn/haru_iida/articles?style=plastic" />
   </a>
 </p>
 
