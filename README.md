@@ -10,8 +10,6 @@
   </a>
 </p>
 
-## Stats
-
 ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=haru)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=haru)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=haru)
@@ -19,3 +17,9 @@
 ![](http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=haru&utcOffset=9)
 
 ![trophy](https://github-profile-trophy.vercel.app/?username=haru)
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=ruby,rails,git,github,docker,c,cpp,cs,css,eclipse,ansible,azure,html,ai,java,js,ts,jenkins,jquery,linux,md,materialui,nextjs,nodejs,notion,perl,raspberrypi,regex,sass,ubuntu,vscode" />
+  </a>
+</p>
