@@ -18,8 +18,10 @@
 
 ![trophy](https://github-profile-trophy.vercel.app/?username=haru)
 
+---
+
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=ruby,rails,git,github,docker,c,cpp,cs,css,eclipse,ansible,azure,html,ai,java,js,ts,jenkins,jquery,linux,md,materialui,nextjs,nodejs,notion,perl,raspberrypi,regex,sass,ubuntu,vscode" />
+    <img src="https://skillicons.dev/icons?i=ruby,rails,git,github,docker,c,cpp,cs,css,eclipse,ansible,azure,html,ai,java,js,ts,jenkins,jquery,linux,md,materialui,nextjs,nodejs,notion,perl,raspberrypi,regex,sass,ubuntu,vscode&theme=light" />
   </a>
 </p>
