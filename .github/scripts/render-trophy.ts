@@ -4,8 +4,13 @@
 // composite action wrapping it, but both hardcode maxColumn = -1, which puts
 // every trophy on a single row. GitHub then scales that wide image down to the
 // README column width, so each trophy ends up much smaller than the vercel API
-// used to render it. This script is upstream's renderer with the grid values
-// the vercel API defaulted to (CONSTANTS.DEFAULT_MAX_COLUMN / _ROW).
+// used to render it. This script is upstream's renderer with the grid fixed
+// instead.
+//
+// 7 columns keeps the SVG at 865px wide, just under GitHub's ~890px README
+// column, so it renders 1:1 with no downscaling. Widening the grid is what
+// shrinks the trophies -- panel size does not help, since the SVG width grows
+// with it and GitHub just scales the whole thing back down.
 //
 // The workflow checks upstream out at ../../.trophy-src, so these imports use
 // its current code rather than a stale fork.
@@ -14,7 +19,7 @@ import { GithubApiService } from "../../.trophy-src/src/Services/GithubApiServic
 import { Card } from "../../.trophy-src/src/card.ts";
 import { COLORS } from "../../.trophy-src/src/theme.ts";
 
-const MAX_COLUMN = 8;
+const MAX_COLUMN = 7;
 const MAX_ROW = 3;
 const PANEL_SIZE = 115;
 const MARGIN_WIDTH = 10;
