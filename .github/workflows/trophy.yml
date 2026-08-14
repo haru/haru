@@ -17,11 +17,19 @@ jobs:
 
       # github-profile-trophy.vercel.app is disabled (HTTP 402), so the SVG is
       # generated here and committed instead of being fetched at render time.
-      - uses: ryo-ma/github-profile-trophy@master
+      #
+      # This is a fork of ryo-ma/github-profile-trophy, pinned to a commit. The
+      # upstream action hardcodes maxColumn = -1, i.e. every trophy on one row,
+      # which GitHub then shrinks to fit the README width. Only the fork exposes
+      # max-cols / max-rows, so it is used to restore the 8x3 wrap that the
+      # vercel API rendered by default (CONSTANTS.DEFAULT_MAX_COLUMN / _ROW).
+      - uses: Erik-Donath/github-profile-trophy@eb0893b31de06841663555d10aa43eb7cf27952f
         with:
           username: ${{ github.repository_owner }}
-          output_path: images/trophy.svg
+          file: images/trophy.svg
           token: ${{ secrets.PROFILE_CARDS || secrets.GITHUB_TOKEN }}
+          max-cols: "8"
+          max-rows: "3"
 
       - name: Commit trophy
         run: |

@@ -39,14 +39,18 @@ gh workflow run GitHub-Profile-Summary-Cards
 gh run watch
 ```
 
-`.github/workflows/trophy.yml` does the same job for the trophy: it runs `ryo-ma/github-profile-trophy@master`'s composite action (a Deno script, `render_svg.ts`) to write `images/trophy.svg`, then commits it. Same on-demand pattern:
+`.github/workflows/trophy.yml` does the same job for the trophy: it runs a composite action (a Deno script, `render_svg.ts`) to write `images/trophy.svg`, then commits it. Same on-demand pattern:
 
 ```sh
 gh workflow run GitHub-Profile-Trophy
 gh run watch
 ```
 
-It prefers `secrets.PROFILE_CARDS` and falls back to `secrets.GITHUB_TOKEN`. The upstream action only exposes `username` / `output_path` / `token` / `theme` — for `max-rows`, `max-cols`, `panel-size`, `no-background` etc. you'd have to switch to the `Erik-Donath/github-profile-trophy@feature/generate-svg` fork.
+It prefers `secrets.PROFILE_CARDS` and falls back to `secrets.GITHUB_TOKEN`.
+
+The action is `Erik-Donath/github-profile-trophy`, a fork of `ryo-ma/github-profile-trophy` pinned to a commit SHA. Upstream has its own `action.yml` on `master`, but it hardcodes `maxColumn = -1` (all trophies on one row); only the fork exposes `max-cols` / `max-rows` / `panel-size` / `margin-*` / `no-background` / `no-frame`. The workflow sets `max-cols: 8, max-rows: 3` to match `CONSTANTS.DEFAULT_MAX_COLUMN` / `DEFAULT_MAX_ROW`, i.e. what the vercel API rendered by default.
+
+Sizing gotcha: the SVG's intrinsic width is `panel-size * cols + margin-width * (cols - 1)`, and GitHub scales the image down to the README column width (~890px). So **`panel-size` does not change the apparent size** — `max-cols` does. Fewer columns = larger trophies.
 
 ## Working here
 
