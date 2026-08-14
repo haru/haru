@@ -5,6 +5,10 @@ on:
     - cron: "30 0 * * *"
   workflow_dispatch:
 
+env:
+  # ryo-ma/github-profile-trophy @ master, 2026-07-25
+  TROPHY_REF: e3c89df995e92e67cdd4b2acaab9d974583dc1f7
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,19 +21,26 @@ jobs:
 
       # github-profile-trophy.vercel.app is disabled (HTTP 402), so the SVG is
       # generated here and committed instead of being fetched at render time.
-      #
-      # This is a fork of ryo-ma/github-profile-trophy, pinned to a commit. The
-      # upstream action hardcodes maxColumn = -1, i.e. every trophy on one row,
-      # which GitHub then shrinks to fit the README width. Only the fork exposes
-      # max-cols / max-rows, so it is used to restore the 8x3 wrap that the
-      # vercel API rendered by default (CONSTANTS.DEFAULT_MAX_COLUMN / _ROW).
-      - uses: Erik-Donath/github-profile-trophy@eb0893b31de06841663555d10aa43eb7cf27952f
+      # Upstream's own action is not used because it hardcodes the grid layout;
+      # see .github/scripts/render-trophy.ts.
+      - name: Checkout trophy renderer
+        uses: actions/checkout@v4
         with:
-          username: ${{ github.repository_owner }}
-          file: images/trophy.svg
-          token: ${{ secrets.PROFILE_CARDS || secrets.GITHUB_TOKEN }}
-          max-cols: "8"
-          max-rows: "3"
+          repository: ryo-ma/github-profile-trophy
+          ref: ${{ env.TROPHY_REF }}
+          path: .trophy-src
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v1.x
+
+      - name: Generate trophy
+        env:
+          GITHUB_TOKEN1: ${{ secrets.PROFILE_CARDS || secrets.GITHUB_TOKEN }}
+        run: |
+          deno run --allow-net --allow-env --allow-read --allow-write \
+            .github/scripts/render-trophy.ts \
+            "${{ github.repository_owner }}" images/trophy.svg
 
       - name: Commit trophy
         run: |

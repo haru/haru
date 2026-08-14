@@ -48,7 +48,9 @@ gh run watch
 
 It prefers `secrets.PROFILE_CARDS` and falls back to `secrets.GITHUB_TOKEN`.
 
-The action is `Erik-Donath/github-profile-trophy`, a fork of `ryo-ma/github-profile-trophy` pinned to a commit SHA. Upstream has its own `action.yml` on `master`, but it hardcodes `maxColumn = -1` (all trophies on one row); only the fork exposes `max-cols` / `max-rows` / `panel-size` / `margin-*` / `no-background` / `no-frame`. The workflow sets `max-cols: 8, max-rows: 3` to match `CONSTANTS.DEFAULT_MAX_COLUMN` / `DEFAULT_MAX_ROW`, i.e. what the vercel API rendered by default.
+The workflow does **not** use a published action. `ryo-ma/github-profile-trophy` has an `action.yml` on `master`, but it — like its `render_svg.ts` — hardcodes `maxColumn = -1`, putting every trophy on one row. The `Erik-Donath/github-profile-trophy@feature/generate-svg` fork the Zenn article recommends does expose `max-cols`/`max-rows`, but it is a stale April 2026 snapshot and now fails with `Error fetching user info` (exit 3) even with a valid token.
+
+So the workflow checks upstream out at `.trophy-src` (gitignored, pinned via the `TROPHY_REF` env var) and runs `.github/scripts/render-trophy.ts`, a ~40-line copy of upstream's renderer that imports `src/card.ts` / `src/Services/GithubApiService.ts` from that checkout and sets the grid to 8 columns x 3 rows — `CONSTANTS.DEFAULT_MAX_COLUMN` / `DEFAULT_MAX_ROW`, i.e. what the vercel API rendered by default. Bump `TROPHY_REF` to take upstream changes; the only API the script depends on is `GithubApiService#requestUserInfo`, the `Card` constructor, and `Card#render`.
 
 Sizing gotcha: the SVG's intrinsic width is `panel-size * cols + margin-width * (cols - 1)`, and GitHub scales the image down to the README column width (~890px). So **`panel-size` does not change the apparent size** — `max-cols` does. Fewer columns = larger trophies.
 
