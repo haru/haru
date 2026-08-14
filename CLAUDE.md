@@ -14,7 +14,7 @@ The profile page itself. It composes third-party badge/card services rendered as
 
 - `komarev.com/ghpvc` (profile view counter), `img.shields.io` (follower count), `badgen.org/img/zenn` (Zenn article count for `haru_iida`)
 - `github-profile-summary-cards.vercel.app/api/cards/...` — the **live API** variants of the summary cards, with `username=haru`. Note the productive-time card passes `utcOffset=9` (JST); keep that if the card is regenerated or moved.
-- `github-profile-trophy.vercel.app`
+- `images/trophy.svg` — a **committed** SVG, not a live URL. `github-profile-trophy.vercel.app` now returns HTTP 402 `DEPLOYMENT_DISABLED`, so the trophy is generated in CI instead (see below).
 - `skillicons.dev/icons?i=...&theme=light` — the tech-stack icon row
 
 Since the page is entirely remote images, "changing the profile" almost always means editing URLs/query params in this file, not writing code. The username `haru` is hard-coded in these URLs.
@@ -38,6 +38,15 @@ To refresh cards on demand, trigger the workflow rather than running anything lo
 gh workflow run GitHub-Profile-Summary-Cards
 gh run watch
 ```
+
+`.github/workflows/trophy.yml` does the same job for the trophy: it runs `ryo-ma/github-profile-trophy@master`'s composite action (a Deno script, `render_svg.ts`) to write `images/trophy.svg`, then commits it. Same on-demand pattern:
+
+```sh
+gh workflow run GitHub-Profile-Trophy
+gh run watch
+```
+
+It prefers `secrets.PROFILE_CARDS` and falls back to `secrets.GITHUB_TOKEN`. The upstream action only exposes `username` / `output_path` / `token` / `theme` — for `max-rows`, `max-cols`, `panel-size`, `no-background` etc. you'd have to switch to the `Erik-Donath/github-profile-trophy@feature/generate-svg` fork.
 
 ## Working here
 

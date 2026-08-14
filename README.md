@@ -16,7 +16,7 @@
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=haru)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=haru&utcOffset=9)
 
-![trophy](https://github-profile-trophy.vercel.app/?username=haru)
+![trophy](./images/trophy.svg)
 
 ---
 

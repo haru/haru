@@ -1,0 +1,32 @@
+name: GitHub-Profile-Trophy
+
+on:
+  schedule: # execute every day at 00:30 UTC (09:30 JST)
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: generate-trophy
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # github-profile-trophy.vercel.app is disabled (HTTP 402), so the SVG is
+      # generated here and committed instead of being fetched at render time.
+      - uses: ryo-ma/github-profile-trophy@master
+        with:
+          username: ${{ github.repository_owner }}
+          output_path: images/trophy.svg
+          token: ${{ secrets.PROFILE_CARDS || secrets.GITHUB_TOKEN }}
+
+      - name: Commit trophy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/trophy.svg
+          git diff --staged --quiet || git commit -m "Generate profile trophy"
+          git push
